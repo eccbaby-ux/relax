@@ -13,6 +13,15 @@ const supabase = createClient(
 );
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+const DEFAULT_CATEGORIES = [
+  'מוזיקה מרגיעה',
+  'סרטונים מצחיקים',
+  'משחקים פשוטים',
+  'נשימות ורוגע',
+  'סיפורים',
+  'חבר וירטואלי',
+];
 const ADMIN_TOKEN = 'relax-admin-secret-token';
 
 // ── Auth ──────────────────────────────────────────────
@@ -72,9 +81,10 @@ app.delete('/api/items/:id', requireAuth, async (req, res) => {
 app.get('/api/categories', async (req, res) => {
   const { data, error } = await supabase.from('items').select('category');
   if (error) return res.status(500).json({ error: error.message });
-  const cats = [...new Set(data.map(i =>
+  const fromDb = data.map(i =>
     typeof i.category === 'object' && i.category !== null ? i.category.name : i.category
-  ))];
+  ).filter(Boolean);
+  const cats = [...new Set([...DEFAULT_CATEGORIES, ...fromDb])];
   res.json(cats);
 });
 
