@@ -31,10 +31,17 @@ function requireAuth(req, res, next) {
 }
 
 // ── Items ─────────────────────────────────────────────
+const normalizeItem = (item) => ({
+  ...item,
+  category: typeof item.category === 'object' && item.category !== null
+    ? item.category.name
+    : item.category,
+});
+
 app.get('/api/items', async (req, res) => {
   const { data, error } = await supabase.from('items').select('*').order('id');
   if (error) return res.status(500).json({ error: error.message });
-  res.json(data);
+  res.json(data.map(normalizeItem));
 });
 
 app.post('/api/items', requireAuth, async (req, res) => {
@@ -65,7 +72,9 @@ app.delete('/api/items/:id', requireAuth, async (req, res) => {
 app.get('/api/categories', async (req, res) => {
   const { data, error } = await supabase.from('items').select('category');
   if (error) return res.status(500).json({ error: error.message });
-  const cats = [...new Set(data.map(i => i.category))];
+  const cats = [...new Set(data.map(i =>
+    typeof i.category === 'object' && i.category !== null ? i.category.name : i.category
+  ))];
   res.json(cats);
 });
 

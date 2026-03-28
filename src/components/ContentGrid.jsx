@@ -1,10 +1,12 @@
 import Card from "./Card";
 
 export default function ContentGrid({ items, activeCategory }) {
+  const getCat = (cat) => (typeof cat === 'object' && cat !== null ? cat.name : cat);
+
   const filtered =
     activeCategory === "הכל"
       ? items
-      : items.filter((item) => item.category === activeCategory);
+      : items.filter((item) => getCat(item.category) === activeCategory);
 
   if (filtered.length === 0) {
     return (
