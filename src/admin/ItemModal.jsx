@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { supabase } from '../supabaseClient';
 
 const EMOJIS = ['🎵','🎶','🎹','🌧️','🌊','🐦','😸','🐱','🐼','🐶','🎬','🫧','🎨','🧩','🌈','🎮','🏃','🧘','🌸','🌳','🌙','🤖','📖','😂'];
 
@@ -8,8 +9,32 @@ export default function ItemModal({ item, categories, onSave, onClose }) {
   const [form, setForm] = useState(item ? { ...item } : { ...EMPTY });
   const [showNewCat, setShowNewCat] = useState(false);
   const [imagePreview, setImagePreview] = useState(item?.image || '');
+  const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const fileInputRef = useRef(null);
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    setError('');
+    try {
+      const ext = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(fileName, file, { upsert: true });
+      if (uploadError) throw uploadError;
+      const { data } = supabase.storage.from('images').getPublicUrl(fileName);
+      set('image', data.publicUrl);
+      setImagePreview(data.publicUrl);
+    } catch (err) {
+      setError('שגיאה בהעלאת התמונה: ' + err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const set = (field, value) => setForm(f => ({ ...f, [field]: value }));
 
@@ -134,20 +159,37 @@ export default function ItemModal({ item, categories, onSave, onClose }) {
 
           {/* Image */}
           <div>
-            <label className="block text-sm font-semibold text-gray-600 mb-1">תמונה (URL)</label>
-            <input
-              type="url"
-              value={form.image}
-              onChange={e => { set('image', e.target.value); setImagePreview(e.target.value); }}
-              placeholder="https://images.unsplash.com/..."
-              dir="ltr"
-              className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-left focus:outline-none focus:border-purple-400"
-            />
+            <label className="block text-sm font-semibold text-gray-600 mb-1">תמונה</label>
+            <div className="flex gap-2 mb-2">
+              <input
+                type="url"
+                value={form.image}
+                onChange={e => { set('image', e.target.value); setImagePreview(e.target.value); }}
+                placeholder="https://... או העלה מהמחשב ←"
+                dir="ltr"
+                className="flex-1 border-2 border-gray-200 rounded-xl px-4 py-2.5 text-left focus:outline-none focus:border-purple-400"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current.click()}
+                disabled={uploading}
+                className="bg-purple-100 text-purple-700 rounded-xl px-4 py-2.5 font-semibold hover:bg-purple-200 active:scale-95 transition-all disabled:opacity-50 whitespace-nowrap"
+              >
+                {uploading ? '⏳' : '📁 העלה'}
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+            </div>
             {imagePreview && (
               <img
                 src={imagePreview}
                 alt="תצוגה מקדימה"
-                className="mt-2 w-full h-32 object-cover rounded-xl border border-purple-100"
+                className="w-full h-32 object-cover rounded-xl border border-purple-100"
                 onError={e => e.target.style.display = 'none'}
               />
             )}
