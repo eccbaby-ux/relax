@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "category": "מוזיקה מרגיעה",
+    "title": "פסנתר שליו ורגוע",
+    "description": "מוזיקת פסנתר רכה ומרגיעה",
+    "image": "https://images.unsplash.com/photo-1520529603883-7d70425cc02c?q=80&w=400",
+    "link": "https://www.youtube.com/watch?v=77ZozI0rw7w",
+    "emoji": "🎹"
+  },
+  {
+    "id": 3,
+    "category": "מוזיקה מרגיעה",
+    "title": "גלי ים בחוף",
+    "description": "קולות גלים מרגיעים",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=400",
+    "link": "https://www.youtube.com/watch?v=bn9F19Hi1Lk",
+    "emoji": "🌊"
+  },
+  {
+    "id": 10,
+    "category": "סרטונים מצחיקים",
+    "title": "אנימציה קצרה ומשעשעת",
+    "description": "סרטון אנימציה עליז",
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400",
+    "link": "https://www.youtube.com/watch?v=38y_1EWIE9I",
+    "emoji": "🎬"
+  },
+  {
+    "id": 13,
+    "category": "משחקים פשוטים",
+    "title": "פאזל תמונות קל",
+    "description": "פאזלים מרגיעים ויפים",
+    "image": "https://images.unsplash.com/photo-1585338661905-645373dd2c5f?q=80&w=400",
+    "link": "https://www.jigsawplanet.com/",
+    "emoji": "🧩"
+  },
+  {
+    "id": 14,
+    "category": "משחקים פשוטים",
+    "title": "בועות צבעוניות",
+    "description": "פוצצו בועות ותנצחו",
+    "image": "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=400",
+    "link": "https://poki.com/en/g/bubble-shooter",
+    "emoji": "🌈"
+  },
+  {
+    "id": 15,
+    "category": "משחקים פשוטים",
+    "title": "התאמת צבעים",
+    "description": "משחק חשיבה מהנה",
+    "image": "https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?q=80&w=400",
+    "link": "https://www.crazygames.com/game/2048",
+    "emoji": "🎮"
+  },
+  {
+    "id": 17,
+    "category": "נשימות ורוגע",
+    "title": "תרגיל נשימה ויזואלי",
+    "description": "נשמו לאט עם הסרטון",
+    "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=400",
+    "link": "https://www.youtube.com/watch?v=5DqTuWve9t8",
+    "emoji": "🧘"
+  },
+  {
+    "id": 22,
+    "category": "חבר וירטואלי",
+    "title": "לדבר עם חבר וירטואלי",
+    "description": "חבר חכם שתמיד כאן בשבילך",
+    "image": "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=400",
+    "link": "https://duckduckgo.com/chat",
+    "emoji": "🤖"
+  }
+]
