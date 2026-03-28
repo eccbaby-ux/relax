@@ -14,11 +14,13 @@ function MainApp() {
   const [activeCategory, setActiveCategory] = useState('הכל');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
   useEffect(() => {
     fetch('/api/items')
       .then(res => res.json())
-      .then(setItems)
-      .catch(() => fetch('/data.json').then(r => r.json()).then(setItems));
+      .then(data => setItems(shuffle(data)))
+      .catch(() => fetch('/data.json').then(r => r.json()).then(data => setItems(shuffle(data))));
   }, []);
 
   return (
