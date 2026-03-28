@@ -6,7 +6,7 @@ const EMPTY = { title: '', category: '', description: '', link: '', image: '', e
 
 export default function ItemModal({ item, categories, onSave, onClose }) {
   const [form, setForm] = useState(item ? { ...item } : { ...EMPTY });
-  const [newCategory, setNewCategory] = useState('');
+  const [showNewCat, setShowNewCat] = useState(false);
   const [imagePreview, setImagePreview] = useState(item?.image || '');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -80,12 +80,13 @@ export default function ItemModal({ item, categories, onSave, onClose }) {
           <div>
             <label className="block text-sm font-semibold text-gray-600 mb-1">קטגוריה *</label>
             <select
-              value={newCategory ? '__new__' : form.category}
+              value={showNewCat ? '__new__' : form.category}
               onChange={e => {
                 if (e.target.value === '__new__') {
-                  setNewCategory('');
+                  setShowNewCat(true);
+                  set('category', '');
                 } else {
-                  setNewCategory('');
+                  setShowNewCat(false);
                   set('category', e.target.value);
                 }
               }}
@@ -96,12 +97,13 @@ export default function ItemModal({ item, categories, onSave, onClose }) {
               <option value="__new__">+ קטגוריה חדשה</option>
             </select>
 
-            {(newCategory !== undefined && (form.category === '' || newCategory !== '')) && (
+            {showNewCat && (
               <input
                 type="text"
-                value={newCategory}
-                onChange={e => { setNewCategory(e.target.value); set('category', e.target.value); }}
+                value={form.category}
+                onChange={e => set('category', e.target.value)}
                 placeholder="שם קטגוריה חדשה..."
+                autoFocus
                 className="w-full border-2 border-purple-300 rounded-xl px-4 py-2.5 text-right focus:outline-none focus:border-purple-500"
               />
             )}
