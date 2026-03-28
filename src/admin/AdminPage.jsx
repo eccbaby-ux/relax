@@ -5,19 +5,28 @@ import ItemModal from './ItemModal';
 export default function AdminPage({ authFetch, logout }) {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [modal, setModal] = useState(null); // null | 'new' | item-object
+  const [modal, setModal] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [filterCat, setFilterCat] = useState('הכל');
   const [search, setSearch] = useState('');
+  const [loadError, setLoadError] = useState('');
   const navigate = useNavigate();
 
   const load = async () => {
-    const [itemsRes, catsRes] = await Promise.all([
-      fetch('/api/items'),
-      fetch('/api/categories'),
-    ]);
-    setItems(await itemsRes.json());
-    setCategories(await catsRes.json());
+    try {
+      setLoadError('');
+      const [itemsRes, catsRes] = await Promise.all([
+        fetch('/api/items'),
+        fetch('/api/categories'),
+      ]);
+      if (!itemsRes.ok) throw new Error(`שגיאת שרת: ${itemsRes.status}`);
+      const itemsData = await itemsRes.json();
+      const catsData = await catsRes.json();
+      setItems(Array.isArray(itemsData) ? itemsData : []);
+      setCategories(Array.isArray(catsData) ? catsData : []);
+    } catch (err) {
+      setLoadError(err.message || 'שגיאה בטעינת הנתונים');
+    }
   };
 
   useEffect(() => { load(); }, []);
@@ -65,6 +74,15 @@ export default function AdminPage({ authFetch, logout }) {
       </header>
 
       <div className="p-4 max-w-5xl mx-auto">
+
+        {/* Error banner */}
+        {loadError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 rounded-2xl p-4 mb-4 text-center font-semibold">
+            ⚠️ {loadError}
+            <br />
+            <span className="text-sm font-normal">בדוק שמשתני הסביבה מוגדרים ב-Vercel (SUPABASE_URL, SUPABASE_SERVICE_KEY, ADMIN_PASSWORD)</span>
+          </div>
+        )}
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
