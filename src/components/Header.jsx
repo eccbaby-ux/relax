@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Header({ onMenuToggle, activeCategory }) {
   const navigate = useNavigate();
-  const title = activeCategory === "הכל" ? "🌈 רוגע" : activeCategory;
+  const title = activeCategory === "הכל" ? "🌈 Relax יובלים" : activeCategory;
 
   return (
     <header className="bg-purple-500 text-white px-4 py-3 flex items-center justify-between shadow-md sticky top-0 z-40">
